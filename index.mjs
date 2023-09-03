@@ -1,6 +1,6 @@
 import EightPuzzle from './eightPuzzle.mjs';
 function resoveEightPuzzle() {
-    var puzzle = new EightPuzzle([[1,3,2], [4,5,6], [7,8,0]	]);
+    const puzzle = new EightPuzzle([[0,2,3], [1,4,6], [7,5,8]]);
     puzzle.resolve();
 }
 resoveEightPuzzle();
