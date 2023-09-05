@@ -24,7 +24,7 @@ function exile( estadoInicial ) {
     console.log( estadoInicial );
     console.log('');
     console.log('== Resultado com custo uniforme == ');
-    console.log( custoUniforme() );
+    console.log( custoUniforme(estadoInicial) );
     console.log('');
     console.log('== Resultado com heuristica simples == ');
     console.log( heuristicaSimpes() );
@@ -35,3 +35,5 @@ function exile( estadoInicial ) {
     console.log('');
 
 }
+
+new EightPuzzle([[0, 2, 3], [1, 4, 6], [7, 5, 8]]).resolve();
