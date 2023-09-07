@@ -36,4 +36,4 @@ function exile( estadoInicial ) {
 
 }
 
-new EightPuzzle([[0, 2, 3], [1, 4, 6], [7, 5, 8]]).resolve();
+new EightPuzzle([[1, 2, 3], [4, 0, 6], [7, 5, 8]]).resolve();
