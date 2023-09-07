@@ -3,37 +3,61 @@ import heuristicaPrecisa from "./heuristacaPrecisa.mjs";
 import heuristicaSimpes from "./heuristicaSimples.mjs";
 
 export default class EightPuzzle {
-    constructor(estadoInicial) {
-        this.estadoInicial = estadoInicial;
+    constructor(estado) {
+        this.estado = estado;
         this.estadoFinal = [[1, 2, 3], [4, 5, 6], [7, 8, 0]];
-        this.passos = 0;
+        this.nodosVisitados = 0;
+        this.tuplaPosicaoZero = this.calculaTuplaPosicaoZero();
+        this.caminho = this.tuplaPosicaoZero + ' -> ';
     }
 
+    getTuplaPosicaoZero() {
+        return this.tuplaPosicaoZero;
+    }
+    setTuplaPosicaoZero(tuplaPosicaoZero) {
+        this.tuplaPosicaoZero = tuplaPosicaoZero;
+    }
+
+    calculaTuplaPosicaoZero() {
+        let campoVazio = this.estado.map( (linha, l ) => {
+            const coluna = linha.indexOf(0);
+            if (coluna > -1) {
+               return [l,coluna];
+            }
+        });
+        this.tuplaPosicaoZero = campoVazio.filter( (el) => el !== undefined)[0];
+        return this.tuplaPosicaoZero;
+    }
     resolve() {
-          exile( this.estadoInicial );
+        this.exile( this.estado );
+    }
+
+    toString(estado) {
+        let string = '';
+        estado.forEach( (linha) => {
+            string += linha + '\n';
+        });
+        return string;
+    }
+
+    exile( estado ) {
+        console.log('');
+        console.log('');
+        console.log('========= Jogo 8 Puzzle ========');
+        console.log('');
+        console.log('Estado incial do jogo: ');
+        console.log( estado );
+        console.log('');
+        console.log('== Resultado com custo uniforme == ');
+        console.log( custoUniforme(this) );
+        console.log('');
+        console.log('== Resultado com heuristica simples == ');
+        console.log( heuristicaSimpes() );
+        console.log('');
+        console.log('== Resultado com heuristica precisa == ');
+        console.log( heuristicaPrecisa() );
+        console.log('');
+        console.log('');
     }
 }
 
-
-function exile( estadoInicial ) {
-    console.log('');
-    console.log('');
-    console.log('========= Jogo 8 Puzzle ========');
-    console.log('');
-    console.log('Estado incial do jogo: ');
-    console.log( estadoInicial );
-    console.log('');
-    console.log('== Resultado com custo uniforme == ');
-    console.log( custoUniforme(estadoInicial) );
-    console.log('');
-    console.log('== Resultado com heuristica simples == ');
-    console.log( heuristicaSimpes() );
-    console.log('');
-    console.log('== Resultado com heuristica precisa == ');
-    console.log( heuristicaPrecisa() );
-    console.log('');
-    console.log('');
-
-}
-
-new EightPuzzle([[1, 2, 3], [4, 0, 6], [7, 5, 8]]).resolve();
