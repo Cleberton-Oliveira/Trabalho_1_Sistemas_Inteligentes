@@ -11,7 +11,11 @@ export default function custoUniforme(eightPuzzle) {
         let nodosFilhos = produzNodosFilhos(eightPuzzle);
 
          for ( let nodo of nodosFilhos) {
+
             eightPuzzleComCustoAdicionado = adicionarCusto(nodo, eightPuzzle);
+            if(JSON.stringify(eightPuzzleComCustoAdicionado.estado) === JSON.stringify(eightPuzzleComCustoAdicionado.estadoFinal)) {
+                return eightPuzzle.nodosVisitados + ' nodos visitados. \n' + eightPuzzle.estado + ' estado após ultimo nodo visitado.\n' + '\n' + eightPuzzle.caminho + ' caminho percorrido. \n';
+            }
         }
         //custoUniforme(eightPuzzleComCustoAdicionado);
     }
@@ -24,17 +28,20 @@ function adicionarCusto(nodo, eightPuzzle) {
     //ADICIONA O CAMINHO PERCORRIDO
     eightPuzzle.caminho += nodo + ' -> ';
     //PEGA A PEÇA QUE VAI SER MOVIMENTADA
-    let peçaMovimentada = eightPuzzle.estado[nodo[0]][nodo[1]];
+    let pecaMovimentada = eightPuzzle.estado[nodo[0]][nodo[1]];
+    let estadoTemporario = JSON.parse(JSON.stringify(eightPuzzle.estado));
     //MOVIMENTA A PEÇA
-    eightPuzzle.estado[nodo[0]][nodo[1]] = 0;
+    estadoTemporario[nodo[0]][nodo[1]] = 0;
     //MOVIMENTA A PEÇA VAZIA
-    eightPuzzle.estado[eightPuzzle.tuplaPosicaoZero[0]][eightPuzzle.tuplaPosicaoZero[1]] = peçaMovimentada;
-    //ATUALIZA A TUPLE DA POSIÇÃO ZERO
+    const tuplaDoZero = eightPuzzle.getTuplaPosicaoZero()
+    estadoTemporario[tuplaDoZero[0]][tuplaDoZero[1]] = pecaMovimentada;
+/*     //ATUALIZA A TUPLE DA POSIÇÃO ZERO
     eightPuzzle.setTuplaPosicaoZero(nodo);
-    console.log(eightPuzzle.tuplaPosicaoZero)
+    console.log(eightPuzzle.tuplaPosicaoZero) */
     //VERIFICA SE O ESTADO É IGUAL AO ESTADO FINAL
-    if (eightPuzzle.toString(eightPuzzle.estado) === eightPuzzle.toString(eightPuzzle.estadoFinal)) {
+    if (JSON.stringify(estadoTemporario) === JSON.stringify(eightPuzzle.estadoFinal)) {
         console.log('Estado final alcançado!');
+        eightPuzzle.estado = estadoTemporario;
         console.log(eightPuzzle.estado);
         return eightPuzzle;
     }
