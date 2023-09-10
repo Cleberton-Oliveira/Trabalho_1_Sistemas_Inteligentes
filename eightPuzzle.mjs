@@ -9,6 +9,33 @@ export default class EightPuzzle {
         this.nodosVisitados = 0;
         this.tuplaPosicaoZero = this.calculaTuplaPosicaoZero();
         this.caminho = this.tuplaPosicaoZero + ' -> ';
+        this.nodoAvo = null;
+        this.abertos = [this.tuplaPosicaoZero];
+        this.visitados = [];
+    }
+
+    setVisitados(visitados) {
+        this.visitados.push(visitados);
+    }
+
+    getVisitados() {
+        return this.visitados;
+    }
+
+    setAbertos(abertos) {
+        this.abertos.push(abertos);
+    }
+
+    getAbertos() {
+        return this.abertos;
+    }
+
+    getNodoAvo() {
+        return this.nodoAvo;
+    }
+
+    setNodoAvo(nodoAvo) {
+        this.nodoAvo = nodoAvo;
     }
 
     getTuplaPosicaoZero() {
