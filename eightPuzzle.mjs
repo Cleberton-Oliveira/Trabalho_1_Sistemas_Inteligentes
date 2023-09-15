@@ -58,7 +58,11 @@ export default class EightPuzzle {
         console.log( estado );
         console.log('');
         console.log('== Resultado com custo uniforme == ');
+        let start = performance.now();
         console.log( custoUniforme(this) );
+        let end = performance.now();
+        let result = (end - start) / 1000;
+        console.log('Tempo de execução: ' + (result) + ' segundos');
         console.log('');
         console.log('== Resultado com heuristica simples == ');
         console.log( heuristicaSimpes() );
