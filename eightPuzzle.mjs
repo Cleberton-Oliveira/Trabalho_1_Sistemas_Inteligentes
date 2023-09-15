@@ -6,11 +6,9 @@ export default class EightPuzzle {
     constructor(estado) {
         this.estado = estado;
         this.estadoFinal = [[1, 2, 3], [4, 5, 6], [7, 8, 0]];
-        this.nodosVisitados = 0;
         this.tuplaPosicaoZero = this.calculaTuplaPosicaoZero();
         this.caminho = this.tuplaPosicaoZero + ' -> ';
-        this.nodoAvo = null;
-        this.abertos = [this.tuplaPosicaoZero];
+        this.abertos = [];
         this.visitados = [];
     }
 
@@ -28,14 +26,6 @@ export default class EightPuzzle {
 
     getAbertos() {
         return this.abertos;
-    }
-
-    getNodoAvo() {
-        return this.nodoAvo;
-    }
-
-    setNodoAvo(nodoAvo) {
-        this.nodoAvo = nodoAvo;
     }
 
     getTuplaPosicaoZero() {
@@ -57,14 +47,6 @@ export default class EightPuzzle {
     }
     resolve() {
         this.exile( this.estado );
-    }
-
-    toString(estado) {
-        let string = '';
-        estado.forEach( (linha) => {
-            string += linha + '\n';
-        });
-        return string;
     }
 
     exile( estado ) {
