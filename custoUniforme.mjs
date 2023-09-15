@@ -1,4 +1,5 @@
 let i = 0
+let k = 0
 export default function custoUniforme(eightPuzzle) {
     if (!eightPuzzle.visitados.find((el) => el === JSON.stringify(eightPuzzle.estado))) {
         eightPuzzle.setAbertos(eightPuzzle.estado);
@@ -6,9 +7,6 @@ export default function custoUniforme(eightPuzzle) {
         eightPuzzle.getAbertos().shift()
         eightPuzzle.estado = JSON.parse(JSON.stringify(eightPuzzle.getAbertos()[0]));
         eightPuzzle.calculaTuplaPosicaoZero();
-        console.log('Estado já visitado. Pulando para o próximo nodo.');
-        console.log(eightPuzzle.estado);
-        console.log('\n');
     }
     i++
     if (i > 100000) {
@@ -24,15 +22,18 @@ export default function custoUniforme(eightPuzzle) {
         }
         custoUniforme(eightPuzzle);
     }
-    eightPuzzle.getAbertos().shift();
-    eightPuzzle.setVisitados(JSON.stringify(eightPuzzle.estado));
-    console.log('Abertos: ');
-    console.log(eightPuzzle.getAbertos());
-    console.log('\n');
-    console.log('Visitados: ');
-    console.log(eightPuzzle.getVisitados());
-    console.log('\n');
-    return eightPuzzle.getVisitados().length + ' nodos visitados. \n' + eightPuzzle.estado + ' estado após ultimo nodo visitado.\n' + eightPuzzle.estadoFinal + ' estado final.' + '\n' + eightPuzzle.caminho + ' caminho percorrido. \n';
+    if (k === 0) {
+        eightPuzzle.getAbertos().shift();
+        eightPuzzle.setVisitados(JSON.stringify(eightPuzzle.estado));
+        console.log('Abertos: ');
+        console.log(eightPuzzle.getAbertos());
+        console.log('\n');
+        console.log('Visitados: ');
+        console.log(eightPuzzle.getVisitados());
+        console.log('\n');
+    }
+    k++;
+    return eightPuzzle.getVisitados().length + ' nodos visitados. \n' + eightPuzzle.estado + ' estado final.' + '\n' + eightPuzzle.caminho + ' caminho percorrido. \n';
 }
 
 function adicionarCusto(nodo, eightPuzzle) {
