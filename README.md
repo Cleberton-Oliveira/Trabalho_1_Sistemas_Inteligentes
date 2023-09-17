@@ -7,12 +7,14 @@ digite:
 
 `npm run start`
 
-aparecerá o resultado
+aparecerá o resultado.
+
+
 
 Se não funcionar, na raiz do projeto digite antes:
 
 `npm i`
-
+Versão utilizada do Node: v20.4.0
 que serve para instalar as dependências do projeto.
 
 Bom jogo!
