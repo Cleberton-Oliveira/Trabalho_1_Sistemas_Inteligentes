@@ -1,6 +1,3 @@
-import { custoUniforme } from "./custoUniforme.mjs";
-import heuristicaPrecisa from "./heuristacaPrecisa.mjs";
-import heuristicaSimpes from "./heuristicaSimples.mjs";
 import Estado from "./estado.mjs";
 export default class EightPuzzle {
     constructor(estado) {
@@ -21,7 +18,14 @@ export default class EightPuzzle {
         return this.visitados;
     }
 
-    setAbertos(aberto) {
+    setAbertos(aberto, reordenar = false) {
+        //-----------------heuristica simples-----------------
+        if (reordenar) {
+            this.abertos.push(aberto);
+            this.abertos.sort( (a,b) => a.custo - b.custo);
+            return;
+        }
+        //----------------------------------------------------
         this.abertos.push(aberto);
     }
 
@@ -61,34 +65,6 @@ export default class EightPuzzle {
         });
         this.tuplaPosicaoZero = campoVazio.filter( (el) => el !== undefined)[0];
         return this.tuplaPosicaoZero;
-    }
-    
-    resolve() {
-        this.exile( this.objEstado );
-    }
-
-    exile( objEstado ) {
-        console.log('');
-        console.log('');
-        console.log('========= Jogo 8 Puzzle ========');
-        console.log('');
-        console.log('Estado incial do jogo: ');
-        console.log( objEstado.estado );
-        console.log('');
-        console.log('== Resultado com custo uniforme == ');
-        let start = performance.now();
-        console.log( custoUniforme(this) );
-        let end = performance.now();
-        let result = (end - start) / 1000;
-        console.log('Tempo de execução: ' + (result) + ' segundos');
-        console.log('');
-        console.log('== Resultado com heuristica simples == ');
-        console.log( heuristicaSimpes() );
-        console.log('');
-        console.log('== Resultado com heuristica precisa == ');
-        console.log( heuristicaPrecisa() );
-        console.log('');
-        console.log('');
     }
 }
 
