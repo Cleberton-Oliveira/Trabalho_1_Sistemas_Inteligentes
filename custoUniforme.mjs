@@ -1,74 +1,62 @@
-let i = 0
-let k = 0
-export default function custoUniforme(eightPuzzle) {
-    if (!eightPuzzle.visitados.find((el) => el === JSON.stringify(eightPuzzle.estado))) {
-        eightPuzzle.setAbertos(eightPuzzle.estado);
-    } else {
-        eightPuzzle.getAbertos().shift()
-        eightPuzzle.estado = JSON.parse(JSON.stringify(eightPuzzle.getAbertos()[0]));
-        eightPuzzle.calculaTuplaPosicaoZero();
-    }
-    i++
-    if (i > 100000) {
-        return 'Não foi possível encontrar o estado final.';
-    }
-    if (JSON.stringify(eightPuzzle.estado) !== JSON.stringify(eightPuzzle.estadoFinal)) {
-        eightPuzzle.setVisitados(JSON.stringify(eightPuzzle.estado));
-        let nodos = produzNodosFilhos(eightPuzzle);
-
-        for ( let nodo of nodos['filhos']) {
-
-            adicionarCusto(nodo, eightPuzzle);
+import Estado from "./estado.mjs";
+export const custoUniforme = eightPuzzle => {
+    let i = 0;
+    while(JSON.stringify(eightPuzzle.objEstado.estado) !== JSON.stringify(eightPuzzle.estadoFinal)) {
+        i++
+        if (i > 1000000) {
+            return 'Não foi possível encontrar o estado final.';
         }
-        custoUniforme(eightPuzzle);
+        if (!eightPuzzle.visitados.find((el) => JSON.stringify(el.estado) === JSON.stringify(eightPuzzle.objEstado.estado))) {
+            eightPuzzle.setAbertos(JSON.parse(JSON.stringify(eightPuzzle.objEstado)));
+        } else {
+            eightPuzzle.getAbertos().shift()
+            eightPuzzle.objEstado =JSON.parse(JSON.stringify(eightPuzzle.getAbertos()[0]));
+            eightPuzzle.calculaTuplaPosicaoZero();
+        }
+        if (!eightPuzzle.visitados.find((el) => JSON.stringify(el.estado) === JSON.stringify(eightPuzzle.objEstado.estado))) {
+            eightPuzzle.setVisitados(JSON.parse(JSON.stringify(eightPuzzle.objEstado)));
+        }
+        const nodos = produzNodosFilhos(eightPuzzle);
+        for ( const nodo of nodos) {
+            adicionarCusto(nodo, eightPuzzle);
+        };
     }
-    if (k === 0) {
-        eightPuzzle.getAbertos().shift();
-        eightPuzzle.setVisitados(JSON.stringify(eightPuzzle.estado));
-        console.log('Abertos: ');
-        console.log(eightPuzzle.getAbertos());
-        console.log('\n');
-        console.log('Visitados: ');
-        console.log(eightPuzzle.getVisitados());
-        console.log('\n');
-    }
-    k++;
-    return eightPuzzle.getVisitados().length + ' nodos visitados. \n' + eightPuzzle.estado + ' estado final.' + '\n' + eightPuzzle.caminho + ' caminho percorrido. \n';
+    let abertos = JSON.parse(JSON.stringify(eightPuzzle.getAbertos()))
+    abertos.shift();
+    let visitados = JSON.parse(JSON.stringify(eightPuzzle.getVisitados()))
+    return visitados.length + ' nodos visitados. \n' + JSON.stringify(eightPuzzle.objEstado.estado) + ' estado final.' + '\n' + eightPuzzle.getCaminho() + ' caminho percorrido. \n';
 }
 
 function adicionarCusto(nodo, eightPuzzle) {
-    eightPuzzle.caminho += nodo + ' -> ';
-    estadoAberto(nodo, eightPuzzle);
-}
-
-function estadoAberto(nodo, eightPuzzle) {
-    let estadoTemporario = JSON.parse(JSON.stringify(eightPuzzle.estado));
-    let pecaMovimentada = eightPuzzle.estado[nodo[0]][nodo[1]];
-    estadoTemporario[nodo[0]][nodo[1]] = 0;
-    const tuplaDoZero = eightPuzzle.getTuplaPosicaoZero();
-    estadoTemporario[tuplaDoZero[0]][tuplaDoZero[1]] = pecaMovimentada;
-    eightPuzzle.setAbertos(estadoTemporario);
-    return estadoTemporario;
+    if (JSON.stringify(eightPuzzle.objEstado.estado) !== JSON.stringify(eightPuzzle.estadoFinal)) {
+        let estadoTemporario = JSON.parse(JSON.stringify(eightPuzzle.objEstado.estado));
+        let pecaMovimentada = eightPuzzle.objEstado.estado[nodo[0]][nodo[1]];
+        estadoTemporario[nodo[0]][nodo[1]] = 0;
+        const tuplaDoZero = eightPuzzle.getTuplaPosicaoZero();
+        estadoTemporario[tuplaDoZero[0]][tuplaDoZero[1]] = pecaMovimentada;
+        const estadoObj = new Estado(estadoTemporario, eightPuzzle.objEstado.estado);
+        if (!eightPuzzle.getVisitados().find((el) => JSON.stringify(el.estado) === JSON.stringify(estadoObj.estado))) {
+            eightPuzzle.setAbertos(estadoObj);
+        }
+    }
 }
 
 function produzNodosFilhos(eightPuzzle) {
-    let nodos = {
-        'filhos': []
-    };
+    let nodos = [];
     let tuplaPosicaoZero = eightPuzzle.calculaTuplaPosicaoZero();
-    let linhaDaTupla = tuplaPosicaoZero[0];
-    let colunaDaTupla = tuplaPosicaoZero[1];
-    if (linhaDaTupla + 1 < 3) {
-        nodos['filhos'].push( [linhaDaTupla + 1,colunaDaTupla ]);
+    let linha = tuplaPosicaoZero[0];
+    let coluna = tuplaPosicaoZero[1];
+    if (linha + 1 < 3) {
+        nodos.push( [linha + 1,coluna ]);
     }
-    if (linhaDaTupla - 1 >= 0) {
-        nodos['filhos'].push([linhaDaTupla - 1,colunaDaTupla ]);
+    if (linha - 1 >= 0) {
+        nodos.push([linha - 1,coluna ]);
     }
-    if (colunaDaTupla + 1 < 3) {
-        nodos['filhos'].push([linhaDaTupla,colunaDaTupla + 1]);
+    if (coluna + 1 < 3) {
+        nodos.push([linha,coluna + 1]);
     }
-    if (colunaDaTupla - 1 >= 0) {
-        nodos['filhos'].push([linhaDaTupla,colunaDaTupla - 1]);
+    if (coluna - 1 >= 0) {
+        nodos.push([linha,coluna - 1]);
     }
     return nodos;
 }
