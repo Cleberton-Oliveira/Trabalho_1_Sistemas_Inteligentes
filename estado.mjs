@@ -1,3 +1,4 @@
+import { algoritmoDeManhattan } from './algoritmoDeManhattan.mjs';
 export default class Estado {
     constructor(estado, pai = null) {
         this.estado = estado;
@@ -5,6 +6,7 @@ export default class Estado {
         this.custo = 0;
         this.estadoFinal = [[1, 2, 3], [4, 5, 6], [7, 8, 0]];
         this.nivel = 0;
+        this.custoMelhorHeuristica = 0;
     }
     setPai(pai) {
         this.pai = pai;
@@ -18,6 +20,13 @@ export default class Estado {
     }
     getCusto() {
         return this.custo;
+    }
+    setCustoMelhorHeuristica(g) {
+        const f = g + algoritmoDeManhattan(this.estado, this.estadoFinal);
+        this.custoMelhorHeuristica = f;
+    }
+    getCustoMelhorHeuristica() {
+        return this.custoMelhorHeuristica;
     }
     qtdPecasNoLugar() {
         const r = this.estado.reduce( (acc, linha, l) => {

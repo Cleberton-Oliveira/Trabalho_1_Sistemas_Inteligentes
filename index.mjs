@@ -1,8 +1,8 @@
 import EightPuzzle from './eightPuzzle.mjs';
 import { custoUniforme } from "./custoUniforme.mjs";
-import heuristicaPrecisa from "./heuristacaPrecisa.mjs";
+import { heuristicaPrecisa } from "./heuristacaPrecisa.mjs";
 import { heuristicaSimples } from "./heuristicaSimples.mjs";
-import  {performance} from 'perf_hooks';
+import  { performance } from 'perf_hooks';
 const resoveEightPuzzle = (inicio) => {
     console.log('');
     console.log('========= Jogo 8 Puzzle ========');
@@ -21,9 +21,13 @@ const resoveEightPuzzle = (inicio) => {
     result = (end - start) / 1000;
     console.log('Tempo de execução: ' + (result) + ' segundos \n');
 
+    
+    start = performance.now();
     console.log('== Resultado com heuristica precisa == ');
     console.log( heuristicaPrecisa(new EightPuzzle(inicio)) );
-
+    end = performance.now();
+    result = (end - start) / 1000;
+    console.log('Tempo de execução: ' + (result) + ' segundos \n');
 }
 
 resoveEightPuzzle([
