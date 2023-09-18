@@ -19,22 +19,19 @@ export default class EightPuzzle {
     }
 
     setAbertos(aberto, reordenar = false, reordenarHeuristicaComplexa = false) {
+        this.abertos.push(aberto);
         //-----------------heuristica simples-----------------
         if (reordenar) {
-            this.abertos.push(aberto);
             this.abertos.sort( (a,b) => a.custo - b.custo);
             return;
         }
         //----------------------------------------------------
-
         //-----------------heuristica precisa-----------------
         if (reordenarHeuristicaComplexa) {
-            this.abertos.push(aberto);
             this.abertos.sort( (a,b) => a.custoMelhorHeuristica - b.custoMelhorHeuristica);
             return;
         }
         //----------------------------------------------------
-        this.abertos.push(aberto);
     }
 
     getAbertos() {
