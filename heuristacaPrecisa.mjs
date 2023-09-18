@@ -41,7 +41,7 @@ function adicionarCusto(nodo, eightPuzzle) {
             const nivelDoPai = eightPuzzle.objEstado.nivel;
             estadoObj.setNivel( nivelDoPai + 1);
             estadoObj.setCustoMelhorHeuristica(estadoObj.nivel);
-            eightPuzzle.setAbertos(estadoObj, true);
+            eightPuzzle.setAbertos(estadoObj, false, true);
             //----------------------------------------------------
         }
     }
